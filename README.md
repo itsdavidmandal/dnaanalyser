@@ -16,8 +16,12 @@ This code provides several functions for analyzing DNA sequences, including find
 3. `find_motifs(sequence, motifs)`: Finds motifs (subsequences) in a DNA sequence and returns a list of starting indices of the motif matches.
 
 4. `predict_protein_coding_regions(sequence)`: Predicts protein coding regions in a DNA sequence and returns a list of protein coding regions as tuples of start and end indices.
-Breakdown of the output 
-5. DNA Sequence: ATGGTACCCTAAATGTAGCTAGCTAAAGTCCCATG Pattern Matches: [9, 23] GC Content: 42.857142857142854 Motif Matches: [8, 12, 32, 15, 19] Coding Regions: [(0, 11), (12, 17)]
+
+5. 
+Breakdown of the output
+
+
+7. DNA Sequence: ATGGTACCCTAAATGTAGCTAGCTAAAGTCCCATG Pattern Matches: [9, 23] GC Content: 42.857142857142854 Motif Matches: [8, 12, 32, 15, 19] Coding Regions: [(0, 11), (12, 17)]
 
 Process finished with exit code 0
 
