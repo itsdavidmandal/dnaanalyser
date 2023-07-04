@@ -1,3 +1,7 @@
+import tkinter as tk
+from tkinter import messagebox
+
+
 def find_pattern(sequence, pattern):
     """
     Finds occurrences of a pattern in a DNA sequence.
@@ -12,6 +16,7 @@ def find_pattern(sequence, pattern):
             matches.append(i)
 
     return matches
+
 
 
 def calculate_gc_content(sequence):
@@ -31,6 +36,8 @@ def calculate_gc_content(sequence):
     return gc_content
 
 
+
+
 def find_motifs(sequence, motifs):
     """
     Finds motifs (subsequences) in a DNA sequence.
@@ -47,6 +54,8 @@ def find_motifs(sequence, motifs):
                 matches.append(i)
 
     return matches
+
+
 
 
 def predict_protein_coding_regions(sequence):
@@ -72,14 +81,39 @@ def predict_protein_coding_regions(sequence):
     return regions
 
 
-# Example usage
-dna_sequence = "ATGGTACCCTAAATGTAGCTAGCTAAAGTCCCATG"
-pattern = "TAA"
-motifs = ["ATG", "TAG"]
-coding_regions = predict_protein_coding_regions(dna_sequence)
+def analyze_sequence():
+    sequence = entry.get()
 
-print("DNA Sequence:", dna_sequence)
-print("Pattern Matches:", find_pattern(dna_sequence, pattern))
-print("GC Content:", calculate_gc_content(dna_sequence))
-print("Motif Matches:", find_motifs(dna_sequence, motifs))
-print("Coding Regions:", coding_regions)
+    pattern = "TAA"
+    motifs = ["ATG", "TAG"]
+    coding_regions = predict_protein_coding_regions(sequence)
+
+    result = ""
+    result += "DNA Sequence: {}\n".format(sequence)
+    result += "Pattern Matches: {}\n".format(find_pattern(sequence, pattern))
+    result += "GC Content: {:.2f}\n".format(calculate_gc_content(sequence))
+    result += "Motif Matches: {}\n".format(find_motifs(sequence, motifs))
+    result += "Coding Regions: {}\n".format(coding_regions)
+
+    # Show the result in a message box
+    messagebox.showinfo("Sequence Analysis Result", result)
+
+
+# Create the main window
+window = tk.Tk()
+window.title("DNA Sequence Analyzer")
+
+# Create a label for instructions
+label = tk.Label(window, text="Enter a DNA sequence:")
+label.pack(pady=10)
+
+# Create an entry field for user input
+entry = tk.Entry(window)
+entry.pack()
+
+# Create a button to trigger the analysis
+button = tk.Button(window, text="Analyze", command=analyze_sequence)
+button.pack(pady=10)
+
+# Start the GUI event loop
+window.mainloop()
