@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+import matplotlib.pyplot as plt
 
 
 def find_pattern(sequence, pattern):
@@ -76,6 +77,32 @@ def predict_protein_coding_regions(sequence):
     return regions
 
 
+def create_dna_sequence_visualization(sequence, highlights=None):
+    """
+    Creates a visualization of a DNA sequence.
+    Optionally, highlights specific regions of interest.
+    """
+    print("Highlights:", highlights)
+
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, len(sequence))
+    ax.set_ylim(0, 1)
+    ax.set_xticks(range(len(sequence)))
+    ax.set_xticklabels(list(sequence), fontsize=8)
+
+    # Highlight regions of interest
+    if highlights:
+        for highlight in highlights:
+            if isinstance(highlight, int):
+                start = end = highlight
+            else:
+                start, end = highlight
+            ax.axvspan(start, end + 1, facecolor='yellow', alpha=0.3)
+
+    ax.set_title("DNA Sequence Visualization")
+    plt.show()
+
+
 def analyze_sequence():
     sequence = entry_sequence.get()
     pattern = entry_pattern.get()
@@ -108,6 +135,11 @@ def analyze_sequence():
         result += "Coding Regions: {}\n".format(coding_regions)
     else:
         result += "No protein coding regions found in the sequence.\n"
+
+    # Create DNA sequence visualization
+    highlights = pattern_matches + coding_regions
+    print("Highlights:", highlights)
+    create_dna_sequence_visualization(sequence, highlights)
 
     # Show the result in a message box
     messagebox.showinfo("Sequence Analysis Result", result)
