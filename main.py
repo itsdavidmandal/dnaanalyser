@@ -18,7 +18,6 @@ def find_pattern(sequence, pattern):
     return matches
 
 
-
 def calculate_gc_content(sequence):
     """
     Calculates the GC content of a DNA sequence.
@@ -34,8 +33,6 @@ def calculate_gc_content(sequence):
 
     gc_content = (gc_count / total_count) * 100
     return gc_content
-
-
 
 
 def find_motifs(sequence, motifs):
@@ -54,8 +51,6 @@ def find_motifs(sequence, motifs):
                 matches.append(i)
 
     return matches
-
-
 
 
 def predict_protein_coding_regions(sequence):
@@ -82,18 +77,37 @@ def predict_protein_coding_regions(sequence):
 
 
 def analyze_sequence():
-    sequence = entry.get()
+    sequence = entry_sequence.get()
+    pattern = entry_pattern.get()
 
-    pattern = "TAA"
-    motifs = ["ATG", "TAG"]
+    # Validate the input
+    if not sequence.isalpha() or set(sequence) - {'A', 'T', 'G', 'C'}:
+        messagebox.showerror("Error", "Invalid input! Please enter a valid DNA sequence.")
+        return
+
+    pattern_matches = find_pattern(sequence, pattern)
+    gc_content = calculate_gc_content(sequence)
+    motifs = find_motifs(sequence, ["ATG", "TAG"])
     coding_regions = predict_protein_coding_regions(sequence)
 
-    result = ""
-    result += "DNA Sequence: {}\n".format(sequence)
-    result += "Pattern Matches: {}\n".format(find_pattern(sequence, pattern))
-    result += "GC Content: {:.2f}\n".format(calculate_gc_content(sequence))
-    result += "Motif Matches: {}\n".format(find_motifs(sequence, motifs))
-    result += "Coding Regions: {}\n".format(coding_regions)
+    result = "DNA Sequence: {}\n".format(sequence)
+
+    if len(pattern_matches) > 0:
+        result += "Pattern '{}' Matches: {}\n".format(pattern, pattern_matches)
+    else:
+        result += "Pattern '{}' not found in the sequence.\n".format(pattern)
+
+    result += "GC Content: {:.2f}\n".format(gc_content)
+
+    if len(motifs) > 0:
+        result += "Motif Matches: {}\n".format(motifs)
+    else:
+        result += "No motifs found in the sequence.\n"
+
+    if len(coding_regions) > 0:
+        result += "Coding Regions: {}\n".format(coding_regions)
+    else:
+        result += "No protein coding regions found in the sequence.\n"
 
     # Show the result in a message box
     messagebox.showinfo("Sequence Analysis Result", result)
@@ -103,13 +117,19 @@ def analyze_sequence():
 window = tk.Tk()
 window.title("DNA Sequence Analyzer")
 
-# Create a label for instructions
-label = tk.Label(window, text="Enter a DNA sequence:")
-label.pack(pady=10)
+# Create a label and entry field for the sequence input
+label_sequence = tk.Label(window, text="Enter a DNA sequence:")
+label_sequence.pack(pady=5)
 
-# Create an entry field for user input
-entry = tk.Entry(window)
-entry.pack()
+entry_sequence = tk.Entry(window)
+entry_sequence.pack()
+
+# Create a label and entry field for the pattern input
+label_pattern = tk.Label(window, text="Enter a pattern:")
+label_pattern.pack(pady=5)
+
+entry_pattern = tk.Entry(window)
+entry_pattern.pack()
 
 # Create a button to trigger the analysis
 button = tk.Button(window, text="Analyze", command=analyze_sequence)
